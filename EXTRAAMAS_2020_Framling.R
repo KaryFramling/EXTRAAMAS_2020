@@ -203,5 +203,23 @@ Fig.iris.plots <- function() {
   }
   par(def.par)  #- reset to what it was before
   
-  # layout(matrix(c(1)))
+  # Bar plots
+  par(mfrow=c(1,3))
+  for ( out.ind in 1:length(iris.types) ) {
+    ciu$barplot.CI.CU(inputs=instance.values, ind.output=out.ind)
+  }
+  par(def.par)  #- reset to what it was before
+  
+  # Bar plots, intermediate concepts
+  voc <- list("Sepal size and shape"=c(1,2), "Petal size and shape"=c(3,4)) # Small vocabulary
+  ciu2 <- ciu.new(rbf, in.min.max.limits=c.minmax, abs.min.max=matrix(c(0,1,0,1,0,1), ncol = 2, byrow = T), 
+                 input.names=iris.inputs, output.names=iris.types, vocabulary=voc)
+  CI.CU <- ciu2$explain.vocabulary(instance.values, concepts.to.explain=c("Sepal size and shape","Petal size and shape"), 
+                                  montecarlo.samples=1000)
+  par(mfrow=c(1,3))
+  for ( out.ind in 1:length(iris.types) ) {
+    ciu2$barplot.CI.CU(instance.values, ind.output=out.ind, concepts.to.explain=c("Sepal size and shape","Petal size and shape"))
+  }
+  par(def.par)  #- reset to what it was before
+  
 }
